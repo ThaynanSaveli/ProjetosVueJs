@@ -2,6 +2,68 @@ html{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.centralizar{
+    justify-content: center;
+}
+
+.papelParede{
+    background-image: url('imagens/tela-inicial.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.gifMonstro{
+    background-image: url('imagens/monstro.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.item:hover{
+    filter: brightness(40%);
+}
+
+.item1{
+    background-image: url('imagens/item1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.item2{
+    background-image: url('imagens/item2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.item3{
+    background-image: url('imagens/item3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.item4{
+    background-image: url('imagens/item4.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.item5{
+    background-image: url('imagens/item5.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.item6{
+    background-image: url('imagens/item6.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.gifPlayer{
+    background-image: url('imagens/player.gif');    
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 #app{
     display: flex;
     flex-direction: column;
@@ -48,6 +110,23 @@ html{
     background-color: red;
 }
 
+.atributos-bar {
+    width: 80%;
+    height: 10px;
+    border: 1px solid #AAA;
+}
+
+.atributos-bar .life {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    background-color: green;
+}
+
+.atributos-bar .life.mana {
+    background-color: #7da9f0;
+}
+
 /** Pontos - end **/
 
 .result{
@@ -58,11 +137,13 @@ html{
 }
 
 .result .win{
-    color: green;
+    background-color: green;
+    color: white;
 }
 
 .result .lose{
-    color: red;
+    background-color: red;
+    color: white;
 }
 
 .buttons{
@@ -71,11 +152,9 @@ html{
 }
 
 .btn{
-    padding: 5px 10px;
     margin: 0px 10px;
     border-radius: 5px;
     text-transform: uppercase;
-    font-size: 1.1rem;
 }
 
 .new-game{
@@ -125,16 +204,16 @@ html{
 }
 
 .player{
-    background-color: #4253af;
+    background-color: #4253afaa;
     color: white;
 }
 
 .monster{
-    background-color: #e51c23;
+    background-color: #e51c23aa;
     color: white;
 }
 
 .healLog{
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.733);
     color: white;
 }

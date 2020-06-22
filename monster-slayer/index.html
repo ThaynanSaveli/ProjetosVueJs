@@ -2,50 +2,115 @@
     <head>
         <meta charset="UTF-8">
         <title>Monster Slayer</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="style.css">
         <script src="https://unpkg.com/vue"></script>
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
+        <script src="https://kit.fontawesome.com/7eb844cc65.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div id="app">
-            <div class="panel scores">
-                <div class="score">
-                    <h1>Player</h1>
-                    <div class="life-bar">
-                        <div class="life" 
-                            :class="{danger: playerLife < 20}"
-                            :style="{width: playerLife + '%'}"></div>
+        
+        <div id="app" :class="{papelParede: mostrarTelaInicial}" style="height: -webkit-fill-available;">
+            <div class="panel scores" v-if="running">
+                <div class="col-12 row">
+                    <div class="col-md-6 score">
+                        <div class="gifPlayer" style="height: 184px; position: relative; width: 41%; max-width: 16%;"></div>
+                        <h1>Jogador</h1>
+                        <div class="life-bar">
+                            <div class="life"
+                                :class="{danger: playerLife < 20}"
+                                :style="{width: playerLife + '%'}"></div>
+                        </div>
+                        <div>{{ playerLife }}%</div>
                     </div>
-                    <div>{{ playerLife }}%</div>
-                </div>
-                <div class="score">
-                    <h1>Monster</h1>
-                    <div class="life-bar">
-                        <div class="life" 
-                            :class="{danger: monsterLife < 20}"
-                            :style="{width: monsterLife + '%'}"></div>
+                    <div class="col-md-6 score">
+                        <div class="gifMonstro" style="height: 184px; position: relative; width: 63%; max-width: 25%;"></div>
+                        <h1>Monstro</h1>
+                        <div class="life-bar">
+                            <div class="life"
+                                :class="{danger: monsterLife < 20}"
+                                :style="{width: monsterLife + '%'}"></div>
+                        </div>
+                        <div>{{ monsterLife }}%</div>
                     </div>
-                    <div>{{ monsterLife }}%</div>
+                    <div class="col-12 atributos mt-4" v-if="running">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <h5><i class="fas fa-hammer"></i> Ataque: {{ danoDoPlayer }}</h5>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <h5><i class="fas fa-shield-alt"></i> Defesa: {{ defesaDoPlayer }}</h5>
+                                    </div>    
+                                    <div class="col-12" style="">
+                                        <h5><i class="fas fa-tint"></i> Mana</h5>
+                                        <div class="atributos-bar">
+                                            <div class="life mana"
+                                                :style="{width: mana + '%'}"></div>
+                                        </div>
+                                        <div>{{ mana }} / 100</div>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <h5>Itens (Próximo Patch)</h5>
+                                        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                                            <div class="col-md-1 item item1" data-tippy-content="Morello: 600 de Gold / +2 de Dano" style="border: 1px solid #000; padding: 10px; height: 67px; margin: 5px;"></div>
+                                            <div class="col-md-1 item item2" data-tippy-content="Danãrina Fantasma: 1000 de Gold / +5 de Dano" style="border: 1px solid #000; padding: 10px; height: 67px; margin: 5px;"></div>
+                                            <div class="col-md-1 item item3" data-tippy-content="Canhão Fumegante: 300 de Gold / +1 de Dano" style="border: 1px solid #000; padding: 10px; height: 67px; margin: 5px;"></div>
+                                            <div class="col-md-1 item item4" data-tippy-content="Hidra Titânica: 600 de Gold / +2 de Defesa" style="border: 1px solid #000; padding: 10px; height: 67px; margin: 5px;"></div>
+                                            <div class="col-md-1 item item5" data-tippy-content="Cutelo Negro: 1000 de Gold / +5 de Defesa" style="border: 1px solid #000; padding: 10px; height: 67px; margin: 5px;"></div>
+                                            <div class="col-md-1 item item6" data-tippy-content="Lacre Negro: 700 de Gold / +3 de Regeneração de Mana" style="border: 1px solid #000; padding: 10px; height: 67px; margin: 5px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <h5><i class="fas fa-hammer"></i> Ataque: {{ danoDoMonstro }}</h5>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <h5><i class="fas fa-shield-alt"></i> Defesa: {{ defesaDoMonstro }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+
             <div v-if="hasResult" class="panel result">
-                <div v-if="monsterLife == 0" class="win">Você Ganhou !!! :)</div>
-                <div v-else class="lose">Você Perdeu !!! :(</div>
+                <div v-if="monsterLife == 0" class="win"><h1>Você Ganhou !!! :)</h1></div>
+                <div v-else class="lose"><h1>Você Perdeu !!! :(</h1></div>
             </div>
+
             <div class="panel buttons">
                 <template v-if="running">
-                    <button @click="attack(false)" class="btn attack">Ataque</button>
-                    <button @click="attack(true)" class="btn especial-attack">Ataque Especial</button>
-                    <button @click="healAndHurt" class="btn heal">Curar</button>
-                    <button @click="running = false" class="btn give-up">Desistir</button>
+                    <button @click="attack(false)" class="btn btn-danger">Ataque</button>
+                    <button @click="attack(true)" :disabled="disabledEspecial" class="btn btn-warning">Ataque Especial</button>
+                    <button @click="healAndHurt" :disabled="disabledCura" class="btn btn-success">Curar</button>
+                    <button @click="giveUp()" class="btn btn-secondary">Desistir</button>
+                    
                 </template>
-                <button v-else @click="startGame" class="btn new-game">Iniciar Jogo</button>
+                <button v-else @click="startGame" class="btn btn-outline-light btn-lg" id="iniciarJogoBtn" style="width: 60%; margin-top: 450px;">Iniciar Jogo</button>
             </div>
-            <div v-if="logs.length" class="panel logs">
+            <div v-show="running" class="col-12 text-center"><h4><i class="fas fa-briefcase-medical"></i> Curas Disponíveis: {{ curasDisponiveis }}</h4></div>
+
+            <div v-if="logs.length && running" class="panel logs">
                 <ul>
                     <li v-for="log in logs" :class="log.cls" class="log">{{ log.text }}</li>
                 </ul>
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+        <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script src="app.js"></script>
+        <script>
+            $('#iniciarJogoBtn').on('click', function(){
+                tippy('[data-tippy-content]');
+            });
+        </script>
     </body>
 </html>
